@@ -60,9 +60,9 @@ function setup() {
   let autoSelectSourceAndTargetButton = createButton(
     "Auto Select Source and Target"
   );
-  resetButton.position(24, 510);
+  resetButton.position(24, 630);
   resetButton.mousePressed(resetSketch);
-  autoSelectSourceAndTargetButton.position(120, 510);
+  autoSelectSourceAndTargetButton.position(120, 630);
   autoSelectSourceAndTargetButton.mousePressed(autoSelectSourceAndTarget);
 }
 
