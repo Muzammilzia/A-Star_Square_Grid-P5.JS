@@ -1,9 +1,11 @@
 let droneImg;
 let img;
+let map;
 // Load the image.
 function preload() {
   droneImg = loadImage("/delivery-drone.webp");
   img = loadImage("/building.webp");
+  map = loadImage("/map.png")
 }
 
 let grid = [];
@@ -16,10 +18,11 @@ const Path_Color = "#4CAF50";
 const Source_Node_Color = "Orange";
 const Target_Node_Color = "Yellow";
 
-w = 700;
+w = 1500;
+h = 700;
 const gridWidth = w;
-const gridHeight = w;
-const blockSize = w / 20;
+const gridHeight = h;
+const blockSize = 10;
 const rows = gridHeight / blockSize;
 const columns = gridWidth / blockSize;
 
@@ -37,8 +40,8 @@ function heuristic(a, b) {
 }
 
 function setup() {
-  createCanvas(w, w);
-  frameRate(5);
+  createCanvas(w, h);
+  frameRate(30);
   rectMode(CENTER);
   for (let i = 0; i < columns; i++) {
     const column = [];
@@ -57,9 +60,9 @@ function setup() {
   let autoSelectSourceAndTargetButton = createButton(
     "Auto Select Source and Target"
   );
-  resetButton.position(24, 20);
+  resetButton.position(24, 510);
   resetButton.mousePressed(resetSketch);
-  autoSelectSourceAndTargetButton.position(120, 20);
+  autoSelectSourceAndTargetButton.position(120, 510);
   autoSelectSourceAndTargetButton.mousePressed(autoSelectSourceAndTarget);
 }
 
@@ -116,26 +119,30 @@ function draw() {
     } else {
       // no possible path
       console.log("SOLUTION NOT POSSIBLE");
+      prompt("SOLUTION NOT POSSIBLE");
       noLoop();
     }
   }
 
+  image(map, 0, 0, w, h)
+
+  noFill()
   // display the grid
-  for (let i = 0; i < columns; i++) {
-    for (let j = 0; j < rows; j++) {
-      grid[i][j].display(color(Grid_Boxes_Color));
-    }
-  }
+  // for (let i = 0; i < columns; i++) {
+  //   for (let j = 0; j < rows; j++) {
+  //     grid[i][j].display(color(Grid_Boxes_Color));
+  //   }
+  // }
 
   // display the openSet
-  for (let i = 0; i < openSet.length; i++) {
-    openSet[i].display(color(Open_Set_Color));
-  }
+  // for (let i = 0; i < openSet.length; i++) {
+  //   openSet[i].display(color(Open_Set_Color));
+  // }
 
   // display the closedList
-  for (let i = 0; i < closedSet.length; i++) {
-    closedSet[i].display(color(Closed_Set_Color));
-  }
+  // for (let i = 0; i < closedSet.length; i++) {
+  //   closedSet[i].display(color(Closed_Set_Color));
+  // }
 
   const path = [];
   if (source && target && current) {
@@ -167,9 +174,9 @@ function draw() {
 
   // display the path
   for (let k = 0; k < path.length; k++) {
-    path[k].display(color(Path_Color));
+    // path[k].display(color(Path_Color));
     stroke("magenta");
-    strokeWeight(5);
+    strokeWeight(4);
 
     if (k === 0) {
       image(
@@ -197,19 +204,6 @@ function draw() {
       source.j * blockSize + blockSize / 2
     );
   }
-
-  // textSize(6);
-  // // display the g, h, and f values
-  // for (let i = 0; i < columns; i++) {
-  //   for (let j = 0; j < rows; j++) {
-  //     fill("tomato");
-  //     text(
-  //       `${grid[i][j].g},${grid[i][j].h},${grid[i][j].f}`,
-  //       i * blockSize + blockSize / 2,
-  //       j * blockSize + blockSize / 2
-  //     );
-  //   }
-  // }
 }
 
 function resetSketch() {
@@ -224,6 +218,10 @@ function resetSketch() {
 
 function mousePressed() {
   console.log(Math.floor(mouseX / blockSize), Math.floor(mouseY / blockSize));
+  if(isWall(Math.floor(mouseX / blockSize), Math.floor(mouseY / blockSize))){
+    prompt("Restricted areas can not be selected as source or destination.")
+    return
+  }
   if (
     Math.floor(mouseY / blockSize) < 0 ||
     Math.floor(mouseX / blockSize) < 0
