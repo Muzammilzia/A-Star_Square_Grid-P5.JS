@@ -249,7 +249,7 @@ function autoSelectSourceAndTarget() {
   do {
     source = grid[floor(random(columns))][floor(random(rows))];
     target = grid[floor(random(columns))][floor(random(rows))];
-  } while (source === target);
+  } while ((source === target) || isWall(source.i, source.j) || isWall(target.i, target.j));
 
   console.log(source, target);
   //   source = grid[0][0];
