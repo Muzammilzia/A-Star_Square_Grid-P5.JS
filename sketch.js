@@ -156,14 +156,14 @@ function draw() {
 
   // add icons
   textAlign(CENTER, CENTER);
-  textSize(blockSize / 2); // Adjust size as needed
+  textSize(blockSize * 3); // Adjust size as needed
   fill(0); // Text color
 
-  if(source){
-    source.display(color(Grid_Boxes_Color));
-  }
+  // if(source){
+  //   source.display(color(Grid_Boxes_Color));
+  // }
   if (target) {
-    target.display(color(Grid_Boxes_Color));
+    // target.display(color(Grid_Boxes_Color));
 
     text(
       "🎯",
@@ -178,21 +178,21 @@ function draw() {
     stroke("magenta");
     strokeWeight(4);
 
-    if (k === 0) {
-      image(
-        droneImg,
-        path[k].i * blockSize,
-        path[k].j * blockSize,
-        blockSize,
-        blockSize
-      );
-    }
     if (k > 0) {
       line(
         path[k - 1].i * blockSize + blockSize / 2,
         path[k - 1].j * blockSize + blockSize / 2,
         path[k].i * blockSize + blockSize / 2,
         path[k].j * blockSize + blockSize / 2
+      );
+    }
+    if (k === 0) {
+      image(
+        droneImg,
+        path[k].i * blockSize - blockSize,
+        path[k].j * blockSize - blockSize,
+        blockSize * 3,
+        blockSize * 3
       );
     }
   }
